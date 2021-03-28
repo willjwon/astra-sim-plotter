@@ -7,7 +7,7 @@ import os
 from csv_loader import CSVLoader
 from breakdown_plot_drawer import *
 from grid_plot_drawer import *
-from network_parser import NetworkParser
+from topology_config_parser import TopologyConfigParser
 from system_parser import SystemParser
 
 
@@ -17,7 +17,7 @@ def main():
         os.makedirs('./graph')
 
     # parsers
-    network_parser = NetworkParser(dir='./inputs/network/analytical')
+    network_parser = TopologyConfigParser(dir='./inputs/network/analytical')
     system_parser = SystemParser(dir='./inputs/system')
 
     # load dataset

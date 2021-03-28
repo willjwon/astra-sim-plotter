@@ -6,12 +6,12 @@ LICENSE file in the root directory of this source tree.
 import os
 import numpy as np
 import pandas as pd
-from network_parser import NetworkParser
+from topology_config_parser import TopologyConfigParser
 from system_parser import SystemParser
 
 
 class CSVLoader:
-    def __init__(self, network_parser: NetworkParser, system_parser: SystemParser, dir='./'):
+    def __init__(self, network_parser: TopologyConfigParser, system_parser: SystemParser, dir='./'):
         self.dir = dir
         self.network_parser = network_parser
         self.system_parser = system_parser
@@ -81,8 +81,9 @@ class CSVLoader:
             for index, row in dataset.iterrows():
                 # get accumulated BW
                 topology_name = row['Topology']
-                accumulated_bw = self.network_parser.accumulated_bandwidth(name=topology_name) * 1024 / 1e6  # MB/us
-                dataset.loc[index, 'AccBW'] = self.network_parser.accumulated_bandwidth(name=topology_name)
+                self.network_parser.load_topology(name=topology_name)
+                accumulated_bw = self.network_parser.accumulated_bandwidth() * 1024 / 1e6  # MB/us
+                dataset.loc[index, 'AccBW'] = self.network_parser.accumulated_bandwidth()
 
                 bw_utilization_total = (row['TotalPayloadSize'] / row['CommsTime']) / accumulated_bw
                 dataset.loc[index, 'BW_Utilization_Total'] = bw_utilization_total
@@ -90,7 +91,8 @@ class CSVLoader:
                 for dim in reported_payload_size_dimensions:
                     payload_size = row[f'PayloadSize_Dim{dim}']
                     if payload_size > 0:
-                        topology_bw_dim = self.network_parser.bandwidth(name=topology_name, dim=dim) * 1024 / 1e6  # MB/us
+                        self.network_parser.load_topology(name=topology_name)
+                        topology_bw_dim = self.network_parser.get_bandwidth_at_dim(dim=dim) * 1024 / 1e6  # MB/us
                         dataset.loc[index, f'BW_Utilization_Dim{dim}'] = (payload_size / row['CommsTime']) / topology_bw_dim
 
                 # compute optimal CommsTime

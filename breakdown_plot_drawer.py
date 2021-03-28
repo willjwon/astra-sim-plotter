@@ -7,7 +7,7 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 import os
 import pandas as pd
-from network_parser import NetworkParser
+from topology_config_parser import TopologyConfigParser
 from system_parser import SystemParser
 
 
