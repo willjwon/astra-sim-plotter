@@ -9,9 +9,9 @@ import seaborn as sns
 from src.plot.plot_controller import PlotController
 
 
-def commstime_topology(dataset: pd.DataFrame, plot_over: List[str], path: str, tight_axis: bool = False):
+def commstime_cost(dataset: pd.DataFrame, plot_over: List[str], path: str, tight_axis: bool = False):
     """
-    <Barplot> CommsTime - Topology
+    <Scatter Plot> CommsTime - Cost
 
     :param dataset: dataset to use
     :param path: path to save graph
@@ -25,21 +25,17 @@ def commstime_topology(dataset: pd.DataFrame, plot_over: List[str], path: str, t
 
     # draw plot
     ax = plot_controller.get_axes()
-    sns.barplot(data=dataset,
-                x='Topology', y='CommsTime',
-                hue='Topology',
-                ax=ax,
-                dodge=False)
-
-    # todo: add theoretical optimal point
-    # sns.lineplot(data=dataset,
-    #              x='Topology', y='CommsTime_Optimal',
-    #              ax=ax)
+    sns.scatterplot(data=dataset,
+                    x='Cost', y='CommsTime',
+                    hue='RunName', style='Topology',
+                    s=300,
+                    ax=ax)
 
     # aesthetics update
-    plot_controller.set_xlabel(xlabel='Topology')
+    plot_controller.set_xlabel(xlabel='Cost ($)')
     plot_controller.set_ylabel(ylabel='CommsTime (ms)')
     plot_controller.set_title()
+    plot_controller.adjust_x_axis_range(xname='Cost', tight_axis=tight_axis)
     plot_controller.adjust_y_axis_range(yname='CommsTime', tight_axis=tight_axis)
     plot_controller.set_post_aesthetics()
 

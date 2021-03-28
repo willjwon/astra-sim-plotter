@@ -57,6 +57,9 @@ class PlotController:
         if remove_legend:
             for ax in self.axes:
                 ax.get_legend().remove()
+        else:
+            for ax in self.axes:
+                ax.legend(loc="center left", bbox_to_anchor=(1.04, 0.5))
 
         fig_width = 10
         fig_height = 7 * self.ncols
@@ -70,6 +73,34 @@ class PlotController:
             return self.axes[0]  # return flat ax
 
         return self.axes
+
+    def adjust_x_axis_range(self, xname: str, tight_axis: bool = False):
+        """
+        Adjust (scale) y axis range.
+
+        :param xname: y axis value name (used to retrieve min/max value from the dataset)
+        :param tight_axis: if True, y axis will be tightly adjusted.
+                           if False, y axis will start from 0.
+        """
+        x_min = min(self.dataset[xname])
+        x_max = max(self.dataset[xname])
+
+        # if x_min = x_max, only one bar.
+        #   dist = x_max
+        # if x_min != x_max, multiple bars.
+        #   dist = x_max - x_min
+        dist = x_max
+        if x_min < x_max:  # if x_min != x_max
+            dist -= x_min
+
+        margin = 0.1 * dist
+        xlim_min = 0
+        xlim_max = x_max + margin
+        if tight_axis:
+            xlim_min = x_min - margin
+
+        for ax in self.axes:
+            ax.set_xlim(xlim_min, xlim_max)
 
     def adjust_y_axis_range(self, yname: str, tight_axis: bool = False):
         """

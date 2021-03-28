@@ -11,3 +11,6 @@ class PlotType(Enum):
     Available plots are listed here.
     """
     CommsTime_CommScale = 1
+    CommsTime_Topology = 2
+    CommsTime_Cost = 3
+
