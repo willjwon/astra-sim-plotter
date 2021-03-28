@@ -97,6 +97,25 @@ class PlotController:
         for ax in self.axes:
             ax.set_ylim(ylim_min, ylim_max)
 
+    def set_xlabel(self, xlabel: str):
+        """
+        Set xlabel (x axis name) of the plot.
+
+        :param xlabel: new xlabel name to set.
+        """
+        for ax in self.axes:
+            ax.set_xlabel(xlabel)
+
+    def set_ylabel(self, ylabel: str):
+        """
+        Set ylabel (axis name) of the plot.
+
+        :param ylabel: new ylabel name to set
+        """
+        # todo: update this
+        for ax in self.axes:
+            ax.set_ylabel(ylabel)
+
     def parse_dataset(self):
         """
         Parse dataset to retrieve meaningful data,

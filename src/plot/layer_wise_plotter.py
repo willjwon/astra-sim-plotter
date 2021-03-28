@@ -15,7 +15,7 @@ def main():
 
     # load dataset
     csv_loader = CSVLoader(dir='../../')
-    dataset = csv_loader.load_dataset(data_type='layer_wise')
+    dataset = csv_loader.read_csv(data_type='layer_wise')
 
     # draw stacked bar plot
     print("Layerwise Plotter")

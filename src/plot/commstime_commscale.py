@@ -31,9 +31,12 @@ def commstime_commscale(dataset: pd.DataFrame, path: str, tight_axis: bool = Fal
                  ax=ax)
 
     # aesthetics update
+    plot_controller.set_xlabel(xlabel='CommScale (MB)')
+    plot_controller.set_ylabel(ylabel='CommsTime (ms)')
     plot_controller.set_title()
     plot_controller.adjust_y_axis_range(yname='CommsTime', tight_axis=tight_axis)
     plot_controller.set_post_aesthetics()
 
     # save plot
-    plot_controller.save(path=path)
+    # plot_controller.save(path=path)
+    plot_controller.show()
