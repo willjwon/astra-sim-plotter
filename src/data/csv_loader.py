@@ -11,7 +11,7 @@ from system_parser import SystemParser
 
 
 class CSVLoader:
-    def __init__(self, network_parser: TopologyConfigParser, system_parser: SystemParser, dir='./'):
+    def __init__(self, network_parser: TopologyConfigParser, system_parser: SystemParser, dir='../'):
         self.dir = dir
         self.network_parser = network_parser
         self.system_parser = system_parser

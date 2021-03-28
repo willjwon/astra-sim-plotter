@@ -13,17 +13,17 @@ from system_parser import SystemParser
 
 def main():
     # reset and make graph result directory
-    if not os.path.exists('./graph'):
-        os.makedirs('./graph')
+    if not os.path.exists('../../graph'):
+        os.makedirs('../../graph')
 
     # parsers
-    network_parser = TopologyConfigParser(dir='./inputs/network/analytical')
-    system_parser = SystemParser(dir='./inputs/system')
+    network_parser = TopologyConfigParser(dir='../inputs/network/analytical')
+    system_parser = SystemParser(dir='../inputs/system')
 
     # load dataset
     print("<Reading Dataset>")
 
-    csv_loader = CSVLoader(network_parser=network_parser, system_parser=system_parser, dir='./')
+    csv_loader = CSVLoader(network_parser=network_parser, system_parser=system_parser, dir='../../')
     dataset = csv_loader.load_dataset(data_type='end_to_end')
     # print(dataset.to_string())
     # exit(-1)
@@ -55,22 +55,22 @@ def main():
                 print(f"(Barplot) Drawing Workload: {workload}, CommScale: {comm_scale}, Passes: {passes}")
 
                 # draw plots
-                draw_running_time_barplot_grid(dataset=data, dir='./graph',
+                draw_running_time_barplot_grid(dataset=data, dir='../../graph',
                                                workload=workload, comm_scale=comm_scale, passes=passes, cut_min=False)
-                draw_running_time_cost_scatter_plot(dataset=data, dir='./graph',
+                draw_running_time_cost_scatter_plot(dataset=data, dir='../../graph',
                                                     workload=workload, comm_scale=comm_scale, passes=passes)
 
                 if draw_cut_plot:
-                    draw_running_time_barplot_grid(dataset=data, dir='./graph',
+                    draw_running_time_barplot_grid(dataset=data, dir='../../graph',
                                                    workload=workload, comm_scale=comm_scale, passes=passes,
                                                    cut_min=True)
 
                 if draw_breakdown_plot:
-                    draw_running_time_barplot(dataset=data, dir='./graph',
+                    draw_running_time_barplot(dataset=data, dir='../../graph',
                                               workload=workload, comm_scale=comm_scale, passes=passes, cut_min=False)
 
                 if draw_breakdown_plot and draw_cut_plot:
-                    draw_running_time_barplot(dataset=data, dir='./graph',
+                    draw_running_time_barplot(dataset=data, dir='../../graph',
                                               workload=workload, comm_scale=comm_scale, passes=passes, cut_min=True)
 
     for workload in dataset['Workload'].unique():
@@ -85,21 +85,21 @@ def main():
 
                 print(f"(CommScale) Drawing Workload: {workload}, Topology: {topology}, Passes: {passes}")
                 # draw plots
-                draw_runtime_commscale_lineplot(dataset=data, dir='./graph',
+                draw_runtime_commscale_lineplot(dataset=data, dir='../../graph',
                                                 workload=workload, topology=topology, passes=passes, cut_min=False)
-                draw_bw_latency_commscale_lineplot(dataset=data, dir='./graph',
+                draw_bw_latency_commscale_lineplot(dataset=data, dir='../../graph',
                                                    workload=workload, topology=topology, passes=passes, cut_min=False)
-                draw_bw_utilization_dim_commscale_lineplot(dataset=data, dir='./graph',
+                draw_bw_utilization_dim_commscale_lineplot(dataset=data, dir='../../graph',
                                                            workload=workload, topology=topology, passes=passes,
                                                            cut_min=False)
 
                 if draw_cut_plot:
-                    draw_runtime_commscale_lineplot(dataset=data, dir='./graph',
+                    draw_runtime_commscale_lineplot(dataset=data, dir='../../graph',
                                                     workload=workload, topology=topology, passes=passes, cut_min=True)
-                    draw_bw_latency_commscale_lineplot(dataset=data, dir='./graph',
+                    draw_bw_latency_commscale_lineplot(dataset=data, dir='../../graph',
                                                        workload=workload, topology=topology, passes=passes,
                                                        cut_min=True)
-                    draw_bw_utilization_dim_commscale_lineplot(dataset=data, dir='./graph',
+                    draw_bw_utilization_dim_commscale_lineplot(dataset=data, dir='../../graph',
                                                                workload=workload, topology=topology, passes=passes,
                                                                cut_min=True)
 

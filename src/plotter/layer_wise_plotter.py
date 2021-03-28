@@ -10,11 +10,11 @@ from grid_plot_drawer import *
 
 def main():
     # reset and make graph result directory
-    if not os.path.exists('./graph'):
-        os.makedirs('./graph')
+    if not os.path.exists('../../graph'):
+        os.makedirs('../../graph')
 
     # load dataset
-    csv_loader = CSVLoader(dir='./')
+    csv_loader = CSVLoader(dir='../../')
     dataset = csv_loader.load_dataset(data_type='layer_wise')
 
     # draw stacked bar plot
@@ -33,23 +33,23 @@ def main():
 
                 # draw non-normalized figure
                 draw_layer_wise_average_chunk_latency_grid(dataset=data,
-                                                      dir='./graph',
-                                                      workload=workload,
-                                                      comm_scale=comm_scale,
-                                                      passes=passes,
-                                                      normalize=False)
+                                                           dir='../../graph',
+                                                           workload=workload,
+                                                           comm_scale=comm_scale,
+                                                           passes=passes,
+                                                           normalize=False)
 
                 # draw normalized plot
                 draw_layer_wise_average_chunk_latency_grid(dataset=data,
-                                                      dir='./graph',
-                                                      workload=workload,
-                                                      comm_scale=comm_scale,
-                                                      passes=passes,
-                                                      normalize=True)
+                                                           dir='../../graph',
+                                                           workload=workload,
+                                                           comm_scale=comm_scale,
+                                                           passes=passes,
+                                                           normalize=True)
 
                 # draw non-normalized figure
                 draw_layer_wise_average_chunk_latency(dataset=data,
-                                                      dir='./graph',
+                                                      dir='../../graph',
                                                       workload=workload,
                                                       comm_scale=comm_scale,
                                                       passes=passes,
@@ -57,7 +57,7 @@ def main():
 
                 # draw normalized plot
                 draw_layer_wise_average_chunk_latency(dataset=data,
-                                                      dir='./graph',
+                                                      dir='../../graph',
                                                       workload=workload,
                                                       comm_scale=comm_scale,
                                                       passes=passes,

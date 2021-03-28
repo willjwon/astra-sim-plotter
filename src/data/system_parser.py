@@ -7,7 +7,7 @@ import os
 
 
 class SystemParser:
-    def __init__(self, dir='./inputs/system'):
+    def __init__(self, dir='../inputs/system'):
         self.path = dir
         self.system = dict()
 
