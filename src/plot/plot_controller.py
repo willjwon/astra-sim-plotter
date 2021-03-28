@@ -3,7 +3,7 @@ This source code is licensed under the MIT license found in the
 LICENSE file in the root directory of this source tree.
 """
 
-from typing import List
+from typing import List, Optional
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -17,7 +17,7 @@ class PlotController:
     Used to create/design/control plots.
     """
 
-    def __init__(self, dataset: pd.DataFrame, melt_data: pd.DataFrame,
+    def __init__(self, dataset: pd.DataFrame, melt_data: Optional[pd.DataFrame],
                  plot_over: List[str], ncols: int =1):
         """
         Instantiate a new PlotController object.
