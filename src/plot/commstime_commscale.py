@@ -3,21 +3,24 @@ This source code is licensed under the MIT license found in the
 LICENSE file in the root directory of this source tree.
 """
 
+from typing import List
 import pandas as pd
 import seaborn as sns
 from src.plot.plot_controller import PlotController
 
 
-def commstime_commscale(dataset: pd.DataFrame, path: str, tight_axis: bool = False):
+def commstime_commscale(dataset: pd.DataFrame, plot_over: List[str], path: str, tight_axis: bool = False):
     """
     <Barplot> CommsTime - CommScale
 
     :param dataset: dataset to use
+    :param plot_over: column names to iterate over when drawing.
+                      used for deciding figure title / filename etc.
     :param path: path to save graph
     :param tight_axis: if true, tightly cut y-axis range.
                        if false, y-axis starts with 0.
     """
-    plot_controller = PlotController(dataset=dataset, ncols=1)
+    plot_controller = PlotController(dataset=dataset, plot_over=plot_over, ncols=1)
 
     # aesthetics pre-update
     plot_controller.set_pre_aesthetics()
@@ -38,5 +41,5 @@ def commstime_commscale(dataset: pd.DataFrame, path: str, tight_axis: bool = Fal
     plot_controller.set_post_aesthetics()
 
     # save plot
-    # plot_controller.save(path=path)
-    plot_controller.show()
+    plot_controller.save(path=path)
+    # plot_controller.show()

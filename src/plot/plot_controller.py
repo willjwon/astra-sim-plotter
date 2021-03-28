@@ -3,6 +3,7 @@ This source code is licensed under the MIT license found in the
 LICENSE file in the root directory of this source tree.
 """
 
+from typing import List
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -16,7 +17,7 @@ class PlotController:
     Used to create/design/control plots.
     """
 
-    def __init__(self, dataset: pd.DataFrame, ncols=1):
+    def __init__(self, dataset: pd.DataFrame, plot_over: List[str], ncols: int =1):
         """
         Instantiate a new PlotController object.
         Create (1, ncols) number of plots.
@@ -25,6 +26,7 @@ class PlotController:
         :param ncols: columns count in a plot
         """
         self.ncols = ncols
+        self.plot_over = plot_over
         self.dataset = dataset
 
         # create fig and axes
@@ -129,6 +131,7 @@ class PlotController:
         parsing_result['RunName'] = datapoint['RunName']
         parsing_result['Passes'] = datapoint['Passes']
         parsing_result['Workload'] = datapoint['Workload']
+        parsing_result['CommScale'] = datapoint['CommScale']
 
         return parsing_result
 
@@ -137,8 +140,18 @@ class PlotController:
         Add a title to the plot.
         """
         config = self.parse_dataset()
-        title = f"{config['Workload']} ({config['RunName']})\n" \
-                f"(Passes: {config['Passes']})"
+
+        # populate title string
+        title = ""
+
+        if 'Workload' in self.plot_over:
+            title += config['Workload']
+        if 'RunName' in self.plot_over:
+            title += f" ({config['RunName']})"
+        if 'CommScale' in self.plot_over:
+            title += f"\nCommScale: {config['CommScale']} MB"
+        if 'Passes' in self.plot_over:
+            title += f"\nPass: {config['Passes']}"
 
         self.fig.suptitle(title)
 
@@ -163,10 +176,31 @@ class PlotController:
         dir_path = os.path.join(path, config['Workload'])
         assert os.path.exists(dir_path), f"Path {dir_path} doesn't exist."
 
-        filename = f"{config['Workload']}_{config['RunName']}_{config['Passes']}pass.pdf"
+        filename = self.create_plot_filename()
         file_path = os.path.join(dir_path, filename)
 
         self.fig.tight_layout()
         self.fig.savefig(file_path)
         self.fig.clf()
         plt.close(fig=self.fig)
+
+    def create_plot_filename(self):
+        """
+        Create plot pdf filename, based on plot_over configurations.
+
+        :return: filename to use
+        """
+        config = self.parse_dataset()
+        filename_str = list()
+
+        if 'Workload' in self.plot_over:
+            filename_str.append(config['Workload'])
+        if 'RunName' in self.plot_over:
+            filename_str.append(config['RunName'])
+        if 'CommScale' in self.plot_over:
+            filename_str.append(f"{config['CommScale']}mb")
+        if 'Passes' in self.plot_over:
+            filename_str.append(f"{config['Passes']}pass")
+
+        filename = "_".join(filename_str)
+        return filename + ".pdf"
