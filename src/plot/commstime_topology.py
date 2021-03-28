@@ -18,7 +18,7 @@ def commstime_topology(dataset: pd.DataFrame, plot_over: List[str], path: str, t
     :param tight_axis: if true, tightly cut y-axis range.
                        if false, y-axis starts with 0.
     """
-    plot_controller = PlotController(dataset=dataset, plot_over=plot_over, ncols=1)
+    plot_controller = PlotController(dataset=dataset, melt_data=None, plot_over=plot_over, ncols=1)
 
     # aesthetics pre-update
     plot_controller.set_pre_aesthetics()

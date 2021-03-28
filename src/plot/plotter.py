@@ -60,6 +60,10 @@ class Plotter:
             for i in range(1, len(col_index)):
                 data = data.loc[data[plot_over[i]] == col_value[i][col_index[i]]]
 
+            # check data validity
+            if len(data) <= 0:
+                continue
+
             # print log message
             running_configs = list()
             print(f"Plotting [{plot_fun.__name__}] on [", end="")

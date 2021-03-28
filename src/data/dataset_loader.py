@@ -46,5 +46,19 @@ class DatasetLoader:
                 # compute CommsTime_BW
                 bw_utilization_total = (row['TotalPayloadSize'] / row['CommsTime']) / accumulated_bw
                 dataset.loc[index, 'CommsTime_BW'] = bw_utilization_total
-                
+
+                # compute CommsTime_BW per each dim
+                # extract reported dim index from the dataset
+                # for example, reported_dim_index can be [0, 1, 2, 3, 4, 5, 6]
+                reported_dim_index = list(filter(lambda x: x.startswith("PayloadSize_Dim"), dataset.columns.unique()))
+                reported_dim_index = list(map(lambda x: int(x[len("PayloadSize_Dim"):]), reported_dim_index))
+
+                # compute CommsTime_BW_Dim
+                for dim in reported_dim_index:
+                    payload_size = row[f'PayloadSize_Dim{dim}']
+                    if payload_size > 0:
+                        self.topology_config_parser.load_topology(name=topology)
+                        topology_bw_dim = self.topology_config_parser.get_bandwidth_at_dim(dim=dim) * 1024 / 1e6  # MB/us
+                        dataset.loc[index, f'CommsTime_BW_Dim{dim}'] = (payload_size / row['CommsTime']) / topology_bw_dim
+
         return dataset

@@ -17,7 +17,8 @@ class PlotController:
     Used to create/design/control plots.
     """
 
-    def __init__(self, dataset: pd.DataFrame, plot_over: List[str], ncols: int =1):
+    def __init__(self, dataset: pd.DataFrame, melt_data: pd.DataFrame,
+                 plot_over: List[str], ncols: int =1):
         """
         Instantiate a new PlotController object.
         Create (1, ncols) number of plots.
@@ -28,6 +29,7 @@ class PlotController:
         self.ncols = ncols
         self.plot_over = plot_over
         self.dataset = dataset
+        self.melt_data = melt_data
 
         # create fig and axes
         self.fig, self.axes = plt.subplots(nrows=1, ncols=ncols)
@@ -83,8 +85,10 @@ class PlotController:
         :param tight_axis: if True, y axis will be tightly adjusted.
                            if False, y axis will start from 0.
         """
-        x_min = min(self.dataset[xname])
-        x_max = max(self.dataset[xname])
+        dataset = self.dataset if self.melt_data is None else self.melt_data
+
+        x_min = min(dataset[xname])
+        x_max = max(dataset[xname])
 
         # if x_min = x_max, only one bar.
         #   dist = x_max
@@ -111,8 +115,10 @@ class PlotController:
         :param tight_axis: if True, y axis will be tightly adjusted.
                            if False, y axis will start from 0.
         """
-        y_min = min(self.dataset[yname])
-        y_max = max(self.dataset[yname])
+        dataset = self.dataset if self.melt_data is None else self.melt_data
+
+        y_min = min(dataset[yname])
+        y_max = max(dataset[yname])
 
         # if y_min = y_max, only one bar.
         #   dist = y_max
@@ -164,6 +170,7 @@ class PlotController:
         parsing_result['Passes'] = datapoint['Passes']
         parsing_result['Workload'] = datapoint['Workload']
         parsing_result['CommScale'] = datapoint['CommScale']
+        parsing_result['PhysicalTopology'] = datapoint['PhysicalTopology']
 
         return parsing_result
 
@@ -180,6 +187,8 @@ class PlotController:
             title += config['Workload']
         if 'RunName' in self.plot_over:
             title += f" ({config['RunName']})"
+        if 'PhysicalTopology' in self.plot_over:
+            title += f"\nTopology: {config['PhysicalTopology']}"
         if 'CommScale' in self.plot_over:
             title += f"\nCommScale: {config['CommScale']} MB"
         if 'Passes' in self.plot_over:
@@ -229,6 +238,8 @@ class PlotController:
             filename_str.append(config['Workload'])
         if 'RunName' in self.plot_over:
             filename_str.append(config['RunName'])
+        if 'PhysicalTopology' in self.plot_over:
+            filename_str.append(config['PhysicalTopology'].replace(" ", "_"))
         if 'CommScale' in self.plot_over:
             filename_str.append(f"{config['CommScale']}mb")
         if 'Passes' in self.plot_over:
