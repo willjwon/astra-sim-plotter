@@ -7,11 +7,11 @@ import os
 import numpy as np
 import pandas as pd
 from topology_config_parser import TopologyConfigParser
-from system_parser import SystemParser
+from system_config_parser import SystemConfigParser
 
 
 class CSVLoader:
-    def __init__(self, network_parser: TopologyConfigParser, system_parser: SystemParser, dir='../'):
+    def __init__(self, network_parser: TopologyConfigParser, system_parser: SystemConfigParser, dir='../'):
         self.dir = dir
         self.network_parser = network_parser
         self.system_parser = system_parser

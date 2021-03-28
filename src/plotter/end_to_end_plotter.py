@@ -4,11 +4,11 @@ LICENSE file in the root directory of this source tree.
 """
 
 import os
-from csv_loader import CSVLoader
+from ..data.csv_loader import CSVLoader
 from breakdown_plot_drawer import *
 from grid_plot_drawer import *
-from topology_config_parser import TopologyConfigParser
-from system_parser import SystemParser
+from ..data.topology_config_parser import TopologyConfigParser
+from ..data.system_config_parser import SystemConfigParser
 
 
 def main():
@@ -18,7 +18,7 @@ def main():
 
     # parsers
     network_parser = TopologyConfigParser(dir='../inputs/network/analytical')
-    system_parser = SystemParser(dir='../inputs/system')
+    system_parser = SystemConfigParser(dir='../inputs/system')
 
     # load dataset
     print("<Reading Dataset>")

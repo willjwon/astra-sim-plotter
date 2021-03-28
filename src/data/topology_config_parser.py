@@ -9,7 +9,7 @@ import numpy as np
 
 
 class TopologyConfigParser:
-    def __init__(self, dir: str = './inputs/network/analytical'):
+    def __init__(self, dir: str = '../../inputs/network/analytical'):
         """
         Initialize TopologyConfigParser instance.
 

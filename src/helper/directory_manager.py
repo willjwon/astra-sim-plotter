@@ -8,7 +8,7 @@ import shutil
 
 
 class DirectoryManager:
-    def __init__(self, top_directory: str = './graph'):
+    def __init__(self, top_directory: str = '../../graph'):
         """
         Initialize DirectoryManager Instance.
 

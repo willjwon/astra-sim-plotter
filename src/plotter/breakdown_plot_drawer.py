@@ -7,8 +7,8 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 import os
 import pandas as pd
-from topology_config_parser import TopologyConfigParser
-from system_parser import SystemParser
+from ..data.topology_config_parser import TopologyConfigParser
+from ..data.system_config_parser import SystemConfigParser
 
 
 def get_plot_title(dataset):
@@ -19,12 +19,12 @@ def get_plot_title(dataset):
     units_count = line['UnitsCount']
     passes = line['Passes']
 
-    system_parser = SystemParser()
+    system_parser = SystemConfigParser()
     system_parser.load_system(name=dataset.iloc[0]['System'])
 
-    chunks_count = system_parser.get_config(key='preferred-dataset-splits')
-    intra_scheduling = system_parser.get_config(key='intra-dimension-scheduling')
-    inter_scheduling = system_parser.get_config(key='inter-dimension-scheduling')
+    chunks_count = system_parser.get_chunks_count()
+    intra_scheduling = system_parser.get_intra_scheduling()
+    inter_scheduling = system_parser.get_inter_scheduling()
 
     # network_parser = NetworkParser()
     # network_parser.load_network(name=dataset.iloc[0]['Topology'])
@@ -45,12 +45,12 @@ def get_plot_title_with_topology(dataset):
     passes = line['Passes']
     topology = line['PhysicalTopology']
 
-    system_parser = SystemParser()
+    system_parser = SystemConfigParser()
     system_parser.load_system(name=dataset.iloc[0]['System'])
 
-    chunks_count = system_parser.get_config(key='preferred-dataset-splits')
-    intra_scheduling = system_parser.get_config(key='intra-dimension-scheduling')
-    inter_scheduling = system_parser.get_config(key='inter-dimension-scheduling')
+    chunks_count = system_parser.get_chunks_count()
+    intra_scheduling = system_parser.get_intra_scheduling()
+    inter_scheduling = system_parser.get_inter_scheduling()
 
     # network_parser = NetworkParser()
     # network_parser.load_network(name=dataset.iloc[0]['Topology'])

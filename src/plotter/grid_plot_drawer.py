@@ -6,7 +6,7 @@ LICENSE file in the root directory of this source tree.
 import seaborn as sns
 import matplotlib.pyplot as plt
 import os
-from system_parser import SystemParser
+from ..data.system_config_parser import SystemConfigParser
 
 
 def get_grid_plot_suptitle(dataset):
@@ -16,12 +16,12 @@ def get_grid_plot_suptitle(dataset):
     comm_scale = line['CommScale']
     passes = line['Passes']
 
-    system_parser = SystemParser()
+    system_parser = SystemConfigParser()
     system_parser.load_system(name=dataset.iloc[0]['System'])
 
-    chunks_count = system_parser.get_config(key='preferred-dataset-splits')
-    intra_scheduling = system_parser.get_config(key='intra-dimension-scheduling')
-    inter_scheduling = system_parser.get_config(key='inter-dimension-scheduling')
+    chunks_count = system_parser.get_chunks_count()
+    intra_scheduling = system_parser.get_intra_scheduling()
+    inter_scheduling = system_parser.get_inter_scheduling()
 
     # network_parser = NetworkParser()
     # network_parser.load_network(name=dataset.iloc[0]['Topology'])
