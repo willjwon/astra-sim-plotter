@@ -4,7 +4,7 @@ LICENSE file in the root directory of this source tree.
 """
 
 import os
-from ..data.csv_loader import CSVLoader
+from ..data.dataset_loader import DatasetLoader
 from breakdown_plot_drawer import *
 from grid_plot_drawer import *
 from ..data.topology_config_parser import TopologyConfigParser
@@ -23,7 +23,7 @@ def main():
     # load dataset
     print("<Reading Dataset>")
 
-    csv_loader = CSVLoader(network_parser=network_parser, system_parser=system_parser, dir='../../')
+    csv_loader = DatasetLoader(network_parser=network_parser, system_parser=system_parser, dir='../../')
     dataset = csv_loader.load_dataset(data_type='end_to_end')
     # print(dataset.to_string())
     # exit(-1)
