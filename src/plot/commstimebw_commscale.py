@@ -9,9 +9,9 @@ import seaborn as sns
 from src.plot.plot_controller import PlotController
 
 
-def commstime_commscale(dataset: pd.DataFrame, plot_over: List[str], path: str, tight_axis: bool = False):
+def commstimebw_commscale(dataset: pd.DataFrame, plot_over: List[str], path: str, tight_axis: bool = False):
     """
-    <Lineplot> CommsTime - CommScale
+    <Lineplot> CommsTime_BW - CommScale
 
     :param dataset: dataset to use
     :param plot_over: column names to iterate over when drawing.
@@ -28,16 +28,16 @@ def commstime_commscale(dataset: pd.DataFrame, plot_over: List[str], path: str, 
     # draw plot
     ax = plot_controller.get_axes()
     sns.lineplot(data=dataset,
-                 x='CommScale', y='CommsTime',
+                 x='CommScale', y='CommsTime_BW',
                  style='PhysicalTopology', hue='PhysicalTopology',
                  markers=True, dashes=False, markersize=15,
                  ax=ax)
 
     # aesthetics update
     plot_controller.set_xlabel(xlabel='CommScale (MB)')
-    plot_controller.set_ylabel(ylabel='CommsTime (ms)')
+    plot_controller.set_ylabel(ylabel='CommsTime_BW')
     plot_controller.set_title()
-    plot_controller.adjust_y_axis_range(yname='CommsTime', tight_axis=tight_axis)
+    plot_controller.adjust_y_axis_range(yname='CommsTime_BW', tight_axis=tight_axis)
     plot_controller.set_post_aesthetics()
 
     # save plot

@@ -18,7 +18,7 @@ class Plotter:
         """
         self.dataset = dataset
 
-    def plot(self, plot_over: List[str], plot_fun: Callable, path: str):
+    def plot(self, plot_over: List[str], plot_fun: Callable, path: str, tight_axis: bool = False):
         """
         Plot plot_fun by iterating over plot_over configurations.
         Save the result pdf graphs into the path directory.
@@ -68,4 +68,4 @@ class Plotter:
             print(f"{plot_over[-1]}: {col_value[-1][col_index[-1]]}].")
 
             # draw plot
-            plot_fun(dataset=data, plot_over=plot_over, path=path, tight_axis=False)
+            plot_fun(dataset=data, plot_over=plot_over, path=path, tight_axis=tight_axis)

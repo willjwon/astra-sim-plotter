@@ -32,7 +32,19 @@ class DatasetLoader:
         :param dataset_type: DatasetType to use. Refer to dataset_type.py.
         :return: loaded and processed dataset (can be used for plotting)
         """
+        # read csv file
         dataset = self.csv_reader.read_csv(dataset_type=dataset_type)
 
-        # do additional queries here
+        # do additional post-processing
+        if dataset_type == DatasetType.BackendEndToEnd:
+            for index, row in dataset.iterrows():
+                # get accumulated BW
+                topology = row['Topology']
+                self.topology_config_parser.load_topology(name=topology)
+                accumulated_bw = self.topology_config_parser.accumulated_bandwidth() * 1024 / 1e6  # MB/us
+
+                # compute CommsTime_BW
+                bw_utilization_total = (row['TotalPayloadSize'] / row['CommsTime']) / accumulated_bw
+                dataset.loc[index, 'CommsTime_BW'] = bw_utilization_total
+                
         return dataset

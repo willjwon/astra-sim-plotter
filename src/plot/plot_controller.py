@@ -48,21 +48,22 @@ class PlotController:
         sns.set(font_scale=1.5)
         sns.set_style('ticks')
 
-    def set_post_aesthetics(self, remove_legend: bool = False):
+    def set_post_aesthetics(self, remove_legend: bool = False, move_legend_out: bool = False):
         """
         Set seaborn plot post-aesthetics.
 
         :param remove_legend: if True, legend will be removed from the reslting plot.
+        :param move_legend_out: if True, move legend outside of the plot
         """
         if remove_legend:
             for ax in self.axes:
                 ax.get_legend().remove()
-        else:
+        elif move_legend_out:
             for ax in self.axes:
                 ax.legend(loc="center left", bbox_to_anchor=(1.04, 0.5))
 
         fig_width = 10
-        fig_height = 7 * self.ncols
+        fig_height = 10 * self.ncols
         self.fig.set_size_inches((fig_width, fig_height))
 
     def get_axes(self):

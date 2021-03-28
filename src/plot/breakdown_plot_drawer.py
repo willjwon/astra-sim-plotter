@@ -11,58 +11,6 @@ from ..data.topology_config_parser import TopologyConfigParser
 from ..data.system_config_parser import SystemConfigParser
 
 
-def get_plot_title(dataset):
-    line = dataset.iloc[0]
-
-    workload = line['Workload']
-    comm_scale = line['CommScale']
-    units_count = line['UnitsCount']
-    passes = line['Passes']
-
-    system_parser = SystemConfigParser()
-    system_parser.load_system(name=dataset.iloc[0]['System'])
-
-    chunks_count = system_parser.get_chunks_count()
-    intra_scheduling = system_parser.get_intra_scheduling()
-    inter_scheduling = system_parser.get_inter_scheduling()
-
-    # network_parser = NetworkParser()
-    # network_parser.load_network(name=dataset.iloc[0]['Topology'])
-    # units_count_str = network_parser.units_count_str()
-
-    return f"""{workload} (CommScale: {comm_scale}, {passes}-pass)
-    UnitsCount: {units_count}, ChunksCount: {chunks_count}
-    Intra: {intra_scheduling}, Inter: {inter_scheduling}
-    """
-
-
-def get_plot_title_with_topology(dataset):
-    line = dataset.iloc[0]
-
-    workload = line['Workload']
-    comm_scale = line['CommScale']
-    units_count = line['UnitsCount']
-    passes = line['Passes']
-    topology = line['PhysicalTopology']
-
-    system_parser = SystemConfigParser()
-    system_parser.load_system(name=dataset.iloc[0]['System'])
-
-    chunks_count = system_parser.get_chunks_count()
-    intra_scheduling = system_parser.get_intra_scheduling()
-    inter_scheduling = system_parser.get_inter_scheduling()
-
-    # network_parser = NetworkParser()
-    # network_parser.load_network(name=dataset.iloc[0]['Topology'])
-    # units_count_str = network_parser.units_count_str()
-
-    return f"""{workload} (CommScale: {comm_scale}, {passes}-pass)
-    Topology: {topology}
-    UnitsCount: {units_count}, ChunksCount: {chunks_count}
-    Intra: {intra_scheduling}, Inter: {inter_scheduling}
-    """
-
-
 def draw_layer_wise_average_chunk_latency(dataset, dir: str, workload: str, comm_scale: str, passes: int, normalize=False):
     # prepare resulting directory
     graph_dir = os.path.join(dir, f'{workload}/layerwise-average-chunk-latency/breakdown')
@@ -118,73 +66,6 @@ def draw_layer_wise_average_chunk_latency(dataset, dir: str, workload: str, comm
         plt.clf()
         plt.close()
 
-
-
-
-def draw_bw_latency_commscale_lineplot(dataset, dir: str, workload: str, topology: str, passes: int,
-                                       cut_min=False):
-    # axis def
-    x_axis = 'CommScale'
-    y_axis = 'BW_Utilization_Total'
-    style = 'PhysicalTopology'
-
-    # prepare resulting directory
-    graph_dir = os.path.join(dir, f'{workload}/bw-latency-commscale/breakdown')
-    graph_dir_cut = os.path.join(graph_dir, 'cut')
-    if not os.path.exists(graph_dir):
-        os.makedirs(graph_dir)
-    if not os.path.exists(graph_dir_cut):
-        os.makedirs(graph_dir_cut)
-
-    for c in dataset['Row'].unique():
-        data = dataset.loc[dataset['Row'] == c]
-        if len(data['CommScale'].unique()) == 1:
-            continue
-
-        # aesthetics pre-update
-        sns.set(font_scale=1.5)
-        sns.set_style('ticks')
-
-        # create subplots
-        fig, ax = plt.subplots(nrows=1, ncols=1)
-
-        # draw plot
-        sns.lineplot(data=data,
-                     x=x_axis, y=y_axis, style=style,
-                     markers=True, dashes=False, markersize=15,
-                     ax=ax)
-
-        ymin = min(data[y_axis])
-        ymax = max(data[y_axis])
-
-        # aesthetic post-update
-        if cut_min:
-            dist = ymax - ymin
-            ylim_min = ymin - (dist * 0.1)
-            ylim_max = ymax + (dist * 0.1)
-        else:
-            ylim_min = 0
-            ylim_max = ymax * 1.1
-
-        title = get_plot_title_with_topology(data)
-        fig.suptitle(title)
-        # fig.suptitle(f"{workload} ({passes}-pass)\n({topology})")
-
-        if ylim_min < ylim_max:
-            ax.set_ylim(ylim_min, ylim_max)
-        ax.get_legend().remove()
-        fig.set_size_inches((10, 10))
-
-        # save plot
-        plt.tight_layout()
-        if cut_min:
-            graph_path = os.path.join(graph_dir_cut, f'row{c}_{workload}_{topology}_{passes}pass_cut.pdf')
-            plt.savefig(graph_path)
-        else:
-            graph_path = os.path.join(graph_dir, f'row{c}_{workload}_{topology}_{passes}pass.pdf')
-            plt.savefig(graph_path)
-        plt.clf()
-        plt.close()
 
 
 def draw_bw_utilization_dim_commscale_lineplot(dataset, dir: str, workload: str, topology: str, passes: int,
@@ -262,5 +143,3 @@ def draw_bw_utilization_dim_commscale_lineplot(dataset, dir: str, workload: str,
             plt.savefig(graph_path)
         plt.clf()
         plt.close()
-
-
