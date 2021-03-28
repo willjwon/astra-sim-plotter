@@ -4,8 +4,11 @@
 # JetBrains
 .idea/
 
-# Result file path
+# Topology/System input file path
+inputs/
+
+# Dataset file path
 result/
 
-# input files path
-inputs/
+# Graph file path
+graph/
