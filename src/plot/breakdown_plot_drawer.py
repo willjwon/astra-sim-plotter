@@ -119,69 +119,6 @@ def draw_layer_wise_average_chunk_latency(dataset, dir: str, workload: str, comm
         plt.close()
 
 
-def draw_runtime_commscale_lineplot(dataset, dir: str, workload: str, topology: str, passes: int, cut_min=False):
-    # axis
-    x_axis = 'CommScale'
-    y_axis = 'CommsTime'
-    style = 'PhysicalTopology'
-
-    # prepare resulting directory
-    graph_dir = os.path.join(dir, f'{workload}/runtime-commscale/breakdown')
-    graph_dir_cut = os.path.join(graph_dir, 'cut')
-    if not os.path.exists(graph_dir):
-        os.makedirs(graph_dir)
-    if not os.path.exists(graph_dir_cut):
-        os.makedirs(graph_dir_cut)
-
-    for c in dataset['Row'].unique():
-        data = dataset.loc[dataset['Row'] == c]
-        if len(data['CommScale'].unique()) == 1:
-            continue
-
-        # aesthetics pre-update
-        sns.set(font_scale=1.5)
-        sns.set_style('ticks')
-
-        # create subplots
-        fig, ax = plt.subplots(nrows=1, ncols=1)
-
-        # draw plot
-        sns.lineplot(data=data,
-                     x=x_axis, y=y_axis, style=style,
-                     markers=True, dashes=False, markersize=15,
-                     ax=ax)
-
-        ymin = min(data['CommsTime'])
-        ymax = max(data['CommsTime'])
-
-        # aesthetic post-update
-        if cut_min:
-            dist = ymax - ymin
-            ylim_min = ymin - (dist * 0.1)
-            ylim_max = ymax + (dist * 0.1)
-        else:
-            ylim_min = 0
-            ylim_max = ymax * 1.1
-
-        title = get_plot_title_with_topology(data)
-        fig.suptitle(title)
-        # fig.suptitle(f"{workload} ({passes}-pass)\n({topology})")
-
-        if ylim_min < ylim_max:
-            ax.set_ylim(ylim_min, ylim_max)
-        ax.get_legend().remove()
-        fig.set_size_inches((10, 10))
-
-        # save plot
-        plt.tight_layout()
-        if cut_min:
-            graph_path = os.path.join(graph_dir_cut, f'row{c}_{workload}_{topology}_{passes}pass_cut.pdf')
-            plt.savefig(graph_path)
-        else:
-            graph_path = os.path.join(graph_dir, f'row{c}_{workload}_{topology}_{passes}pass.pdf')
-            plt.savefig(graph_path)
-        plt.clf()
-        plt.close()
 
 
 def draw_bw_latency_commscale_lineplot(dataset, dir: str, workload: str, topology: str, passes: int,

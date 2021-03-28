@@ -17,7 +17,7 @@ class DirectoryManager:
         self.top_directory = top_directory
         self.top_directory_ready = os.path.exists(top_directory)  # check if top_directory exists
 
-    def create_top_directory(self, reset_if_exist: bool = True):
+    def create_top_directory(self, reset_if_exist: bool = False):
         """
         Create top directory.
 
@@ -34,11 +34,11 @@ class DirectoryManager:
 
         self.top_directory_ready = True
 
-    def create_subdirectory(self, name: str, reset_if_exist: bool = True):
+    def create_subdirectory(self, path: str, reset_if_exist: bool = False):
         """
         Create subdirectory inside the top directory.
 
-        :param name: name (or path) of a subdirectory
+        :param path: path to the subdirectory
         :param reset_if_exist: if True, reset the subdirectory if one already exists.
         """
         if not self.top_directory_ready:
@@ -48,7 +48,7 @@ class DirectoryManager:
         # Create subdirectory if
         #   1. if one doesn't exist yet
         #   2. if exist but reset_if_exist is set to True
-        subdirectory_path = os.path.join(self.top_directory, name)
+        subdirectory_path = os.path.join(self.top_directory, path)
         if not os.path.exists(subdirectory_path):
             os.makedirs(name=subdirectory_path)
         elif reset_if_exist:

@@ -6,9 +6,8 @@ LICENSE file in the root directory of this source tree.
 from enum import Enum
 
 
-class DatasetType(Enum):
+class PlotType(Enum):
     """
-    Available dataset types are defined here
+    Available plots are listed here.
     """
-    BackendEndToEnd = 1
-    BackendLayerWise = 2
+    CommsTime_CommScale = 1

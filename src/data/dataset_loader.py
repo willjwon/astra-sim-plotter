@@ -6,7 +6,7 @@ LICENSE file in the root directory of this source tree.
 import os
 import numpy as np
 import pandas as pd
-from .dataset_type import DatasetType
+from src.data.dataset_type import DatasetType
 
 
 class DatasetLoader:
@@ -59,6 +59,10 @@ class DatasetLoader:
         dataset['UnitsCount'] = run_name_split[11].str.replace(" ", "_")
         dataset['Passes'] = run_name_split[13].astype(int)
 
+        # add new columns
+        dataset['NPUsCount'] = [np.prod(list(map(int, uc))) for uc in dataset['UnitsCount'].str.split('_')]
+        dataset['PhysicalTopology'] = dataset['Topology'] + " (" + dataset['UnitsCount'] + ')'
+
     def load_dataset(self, dataset_type: DatasetType):
         """
         Load dataset
@@ -94,9 +98,7 @@ class DatasetLoader:
 
 
         # # additional columns
-        # dataset['PhysicalTopology'] = dataset['Topology'] + " (" + dataset['UnitsCount'] + ')'
-        # dataset['NPUsCount'] = [np.prod(list(map(int, uc))) for uc in dataset['UnitsCount'].str.split('_')]
-        #
+
         # # Get dimensions
         # reported_payload_size_dimensions = list(filter(lambda x: x.startswith("PayloadSize_Dim"), dataset.columns.unique()))
         # reported_payload_size_dimensions = list(map(lambda x: int(x[len("PayloadSize_Dim"):]), reported_payload_size_dimensions))
