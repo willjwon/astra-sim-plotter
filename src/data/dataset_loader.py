@@ -60,5 +60,7 @@ class DatasetLoader:
                         self.topology_config_parser.load_topology(name=topology)
                         topology_bw_dim = self.topology_config_parser.get_bandwidth_at_dim(dim=dim) * 1024 / 1e6  # MB/us
                         dataset.loc[index, f'CommsTime_BW_Dim{dim}'] = (payload_size / row['CommsTime']) / topology_bw_dim
+        elif dataset_type == DatasetType.BackendLayerWise:
+            dataset['DimensionIndex'] = dataset['DimensionIndex'].astype(int)
 
         return dataset
