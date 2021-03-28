@@ -3,3 +3,9 @@
 
 # JetBrains
 .idea/
+
+# Result file path
+result/
+
+# input files path
+inputs/
