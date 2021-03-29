@@ -35,12 +35,11 @@ class DatasetLoader:
         # read csv file
         dataset = self.csv_reader.read_csv(dataset_type=dataset_type)
 
-        # do additional post-processing
+        # do additional post-processing per each dataset type
         if dataset_type == DatasetType.BackendEndToEnd:
             for index, row in dataset.iterrows():
                 # get accumulated BW
-                topology = row['Topology']
-                self.topology_config_parser.load_topology(name=topology)
+                self.topology_config_parser.load_topology(name=row['Topology'])
                 accumulated_bw = self.topology_config_parser.accumulated_bandwidth() * 1024 / 1e6  # MB/us
 
                 # compute CommsTime_BW
@@ -57,10 +56,21 @@ class DatasetLoader:
                 for dim in reported_dim_index:
                     payload_size = row[f'PayloadSize_Dim{dim}']
                     if payload_size > 0:
-                        self.topology_config_parser.load_topology(name=topology)
                         topology_bw_dim = self.topology_config_parser.get_bandwidth_at_dim(dim=dim) * 1024 / 1e6  # MB/us
                         dataset.loc[index, f'CommsTime_BW_Dim{dim}'] = (payload_size / row['CommsTime']) / topology_bw_dim
+
+            # remove redundant columns
+            payload_size_cols = filter(lambda x: 'PayloadSize' in x, dataset.columns.unique())
+            dataset.drop(labels=payload_size_cols, axis='columns', inplace=True)
+
         elif dataset_type == DatasetType.BackendLayerWise:
             dataset['DimensionIndex'] = dataset['DimensionIndex'].astype(int)
+
+        # common post-processing
+        # get scheduling policy
+        for index, row in dataset.iterrows():
+            self.system_config_parser.load_system(name=row['System'])
+            dataset.loc[index, 'IntraScheduling'] = self.system_config_parser.get_intra_scheduling()
+            dataset.loc[index, 'InterScheduling'] = self.system_config_parser.get_inter_scheduling()
 
         return dataset

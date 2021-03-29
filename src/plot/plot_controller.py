@@ -171,6 +171,8 @@ class PlotController:
         parsing_result['Workload'] = datapoint['Workload']
         parsing_result['CommScale'] = datapoint['CommScale']
         parsing_result['PhysicalTopology'] = datapoint['PhysicalTopology']
+        parsing_result['IntraScheduling'] = datapoint['IntraScheduling']
+        parsing_result['InterScheduling'] = datapoint['InterScheduling']
 
         return parsing_result
 
@@ -193,6 +195,7 @@ class PlotController:
             title += f"\nCommScale: {config['CommScale']} MB"
         if 'Passes' in self.plot_over:
             title += f"\nPass: {config['Passes']}"
+        title += f"\nScheduling: (intra: {config['IntraScheduling']}, inter: {config['InterScheduling']})"
 
         self.fig.suptitle(title)
 
