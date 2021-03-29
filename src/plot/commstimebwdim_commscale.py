@@ -3,13 +3,13 @@ This source code is licensed under the MIT license found in the
 LICENSE file in the root directory of this source tree.
 """
 
-from typing import List
+from typing import List, Optional
 import pandas as pd
 import seaborn as sns
 from src.plot.plot_controller import PlotController
 
 
-def commstimebwdim_commscale(dataset: pd.DataFrame, plot_over: List[str], path: str, tight_axis: bool = False):
+def commstimebwdim_commscale(dataset: pd.DataFrame, plot_over: List[str], grid_over: Optional[str], path: str, tight_axis: bool = False):
     """
     <Lineplot> CommsTime_BW_dim - CommScale
 
@@ -25,7 +25,7 @@ def commstimebwdim_commscale(dataset: pd.DataFrame, plot_over: List[str], path: 
     dimensions_to_melt.insert(0, 'CommsTime_BW')
 
     melt_data = pd.melt(dataset, id_vars=['CommScale'], value_vars=dimensions_to_melt,
-                   var_name='Dimension', value_name='CommsTime_BW_Dim')
+                        var_name='Dimension', value_name='CommsTime_BW_Dim')
     melt_data.dropna(inplace=True)
     for index, row in melt_data.iterrows():
         if row['Dimension'] == 'CommsTime_BW':

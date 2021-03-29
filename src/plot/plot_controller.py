@@ -18,18 +18,26 @@ class PlotController:
     """
 
     def __init__(self, dataset: pd.DataFrame, melt_data: Optional[pd.DataFrame],
-                 plot_over: List[str], ncols: int =1):
+                 plot_over: List[str],
+                 ncols: int = 1,
+                 width: int = 10,
+                 height: int = 10):
         """
         Instantiate a new PlotController object.
         Create (1, ncols) number of plots.
 
         :param dataset: dataset to use
-        :param ncols: columns count in a plot
+        :param melt_data: if plotting depends on melt_data, set this.
+                          if not, set this to None.
+        :param plot_over: column names to plot over. used to define figure name, filename etc.
+        :param ncols: columns count in a plot. (if greater than 1, it's gridplot)
         """
         self.ncols = ncols
         self.plot_over = plot_over
         self.dataset = dataset
         self.melt_data = melt_data
+        self.width = width
+        self.height = height
 
         # create fig and axes
         self.fig, self.axes = plt.subplots(nrows=1, ncols=ncols)
@@ -64,9 +72,8 @@ class PlotController:
             for ax in self.axes:
                 ax.legend(loc="center left", bbox_to_anchor=(1.04, 0.5))
 
-        fig_width = 10
-        fig_height = 10 * self.ncols
-        self.fig.set_size_inches((fig_width, fig_height))
+        fig_width = self.width * self.ncols
+        self.fig.set_size_inches((fig_width, self.height))
 
     def get_axes(self):
         """
@@ -146,15 +153,27 @@ class PlotController:
         for ax in self.axes:
             ax.set_xlabel(xlabel)
 
+    def rotate_xlabel(self) -> None:
+        """
+        Rotate xlabel by 90 degree, for readability
+        """
+        for ax in self.axes:
+            ax.set_xticklabels(ax.get_xticklabels(), rotation=90)
+
     def set_ylabel(self, ylabel: str):
         """
         Set ylabel (axis name) of the plot.
 
         :param ylabel: new ylabel name to set
         """
-        # todo: update this
         for ax in self.axes:
             ax.set_ylabel(ylabel)
+
+        if self.ncols > 1:
+            # gridplot
+            for ax in self.axes[1:]:
+                ax.set_yticklabels([])
+                ax.set_ylabel("")
 
     def parse_dataset(self):
         """
@@ -249,4 +268,10 @@ class PlotController:
             filename_str.append(f"{config['Passes']}pass")
 
         filename = "_".join(filename_str)
-        return filename + ".pdf"
+
+        if self.ncols > 1:
+            # grid plot: return
+            return filename + ".pdf"
+
+        # not grid plot: save in breakdown folder
+        return os.path.join('breakdown', filename) + ".pdf"

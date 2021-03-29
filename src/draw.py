@@ -35,6 +35,7 @@ def main():
     directory_manager = DirectoryManager(top_directory='../graph')
     directory_manager.create_top_directory(reset_if_exist=False)
     for workload in backend_end_to_end_dataset['Workload'].unique():
+        # grid directories
         directory_manager.create_subdirectory(path=f'CommsTime_CommScale/{workload}', reset_if_exist=True)
         directory_manager.create_subdirectory(path=f'CommsTime_Topology/{workload}', reset_if_exist=True)
         directory_manager.create_subdirectory(path=f'CommsTime_Cost/{workload}', reset_if_exist=True)
@@ -42,25 +43,46 @@ def main():
         directory_manager.create_subdirectory(path=f'CommsTimeBwDim_CommScale/{workload}', reset_if_exist=True)
         directory_manager.create_subdirectory(path=f'CommsTimeChunk_Topology/{workload}', reset_if_exist=True)
 
+        # breakdown directories
+        directory_manager.create_subdirectory(path=f'CommsTime_CommScale/{workload}/breakdown', reset_if_exist=True)
+        directory_manager.create_subdirectory(path=f'CommsTime_Topology/{workload}/breakdown', reset_if_exist=True)
+        directory_manager.create_subdirectory(path=f'CommsTime_Cost/{workload}/breakdown', reset_if_exist=True)
+        directory_manager.create_subdirectory(path=f'CommsTimeBW_CommScale/{workload}/breakdown', reset_if_exist=True)
+        directory_manager.create_subdirectory(path=f'CommsTimeBwDim_CommScale/{workload}/breakdown', reset_if_exist=True)
+        directory_manager.create_subdirectory(path=f'CommsTimeChunk_Topology/{workload}/breakdown', reset_if_exist=True)
+
     # plot required figures
+    # grid plots
+    end_to_end_plotter.plot(plot_over=['Passes', 'Workload', 'CommScale'],
+                            grid_over='RunName',
+                            plot_fun=commstime_topology,
+                            path='../graph/CommsTime_Topology')
+
+    # breakdown plots
     end_to_end_plotter.plot(plot_over=['RunName', 'Passes', 'Workload'],
+                            grid_over=None,
                             plot_fun=commstime_commscale,
                             path='../graph/CommsTime_CommScale')
     end_to_end_plotter.plot(plot_over=['RunName', 'Passes', 'Workload', 'CommScale'],
+                            grid_over=None,
                             plot_fun=commstime_topology,
                             path='../graph/CommsTime_Topology')
     end_to_end_plotter.plot(plot_over=['Passes', 'Workload', 'CommScale'],
+                            grid_over=None,
                             plot_fun=commstime_cost,
                             path='../graph/CommsTime_Cost')
     end_to_end_plotter.plot(plot_over=['RunName', 'Passes', 'Workload'],
+                            grid_over=None,
                             plot_fun=commstimebw_commscale,
                             path='../graph/CommsTimeBW_CommScale',
                             tight_axis=True)
     end_to_end_plotter.plot(plot_over=['RunName', 'Passes', 'Workload', 'PhysicalTopology'],
                             plot_fun=commstimebwdim_commscale,
+                            grid_over=None,
                             path='../graph/CommsTimeBwDim_CommScale',
                             tight_axis=True)
     layerwise_plotter.plot(plot_over=['RunName', 'Passes', 'Workload', 'CommScale'],
+                           grid_over=None,
                            plot_fun=commstimechunk_topology,
                            path='../graph/CommsTimeChunk_Topology',
                            tight_axis=True)

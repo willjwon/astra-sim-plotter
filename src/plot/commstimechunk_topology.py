@@ -3,7 +3,7 @@ This source code is licensed under the MIT license found in the
 LICENSE file in the root directory of this source tree.
 """
 
-from typing import List
+from typing import List, Optional
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -11,7 +11,7 @@ import seaborn as sns
 from src.plot.plot_controller import PlotController
 
 
-def commstimechunk_topology(dataset: pd.DataFrame, plot_over: List[str], path: str, tight_axis: bool = False):
+def commstimechunk_topology(dataset: pd.DataFrame, plot_over: List[str], grid_over: Optional[str], path: str, tight_axis: bool = False):
     """
     <Stacked barplot> CommsTime_BW_Chunk - Topology
 
@@ -37,7 +37,8 @@ def commstimechunk_topology(dataset: pd.DataFrame, plot_over: List[str], path: s
 
     # create plot_controller
     plot_controller = PlotController(dataset=dataset, melt_data=melt_data,
-                                     plot_over=plot_over, ncols=1)
+                                     plot_over=plot_over, ncols=1,
+                                     width=7, height=15)
 
     # aesthetics pre-update
     plot_controller.set_pre_aesthetics()

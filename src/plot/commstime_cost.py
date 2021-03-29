@@ -3,13 +3,13 @@ This source code is licensed under the MIT license found in the
 LICENSE file in the root directory of this source tree.
 """
 
-from typing import List
+from typing import List, Optional
 import pandas as pd
 import seaborn as sns
 from src.plot.plot_controller import PlotController
 
 
-def commstime_cost(dataset: pd.DataFrame, plot_over: List[str], path: str, tight_axis: bool = False):
+def commstime_cost(dataset: pd.DataFrame, plot_over: List[str], grid_over: Optional[str], path: str, tight_axis: bool = False):
     """
     <Scatter Plot> CommsTime - Cost
 

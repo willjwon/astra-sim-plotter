@@ -3,7 +3,7 @@ This source code is licensed under the MIT license found in the
 LICENSE file in the root directory of this source tree.
 """
 
-from typing import List, Callable
+from typing import List, Callable, Optional
 from src.plot.plot_controller import PlotController
 import pandas as pd
 import numpy as np
@@ -18,7 +18,8 @@ class Plotter:
         """
         self.dataset = dataset
 
-    def plot(self, plot_over: List[str], plot_fun: Callable, path: str, tight_axis: bool = False):
+    def plot(self, plot_over: List[str], grid_over: Optional[str],
+             plot_fun: Callable, path: str, tight_axis: bool = False):
         """
         Plot plot_fun by iterating over plot_over configurations.
         Save the result pdf graphs into the path directory.
@@ -27,6 +28,8 @@ class Plotter:
                           for example, ['Workload', 'Passes', 'CommScale']
                           Will split workload, passes, and commscale
                           and plot them on separate figures.
+        :param grid_over: if gridplot, set this to the column you want to use as a grid.
+                          if not, set this to None.
         :param plot_fun: plotting function to use
         :param path: path to save result pdf plots
         """
@@ -72,4 +75,5 @@ class Plotter:
             print(f"{plot_over[-1]}: {col_value[-1][col_index[-1]]}].")
 
             # draw plot
-            plot_fun(dataset=data, plot_over=plot_over, path=path, tight_axis=tight_axis)
+            plot_fun(dataset=data, plot_over=plot_over, grid_over=grid_over,
+                     path=path, tight_axis=tight_axis)
