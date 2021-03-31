@@ -22,37 +22,59 @@ def commstimechunk_topology(dataset: pd.DataFrame, plot_over: List[str], grid_ov
     :param tight_axis: if true, tightly cut y-axis range.
                        if false, y-axis starts with 0.
     """
-    # melt dataset
-    melt_data = dataset.groupby(['Topology', 'DimensionIndex'], sort=False)['AverageChunkLatency'] \
-        .sum() \
-        .unstack()
+    if grid_over is None:
+        grid_values = None
+        # create plot_controller
+        plot_controller = PlotController(dataset=dataset, melt_data=None,
+                                         plot_over=plot_over, ncols=1,
+                                         width=7, height=15)
+    else:
+        grid_values = dataset[grid_over].unique()
 
-    # fixme: normalization code
-    # normalize dataset if required
-    # normalize by summation
-    # if normalize:
-    #     for index, row in melt_data.iterrows():
-    #         row_sum = row.dropna().sum()
-    #         melt_data.loc[index] /= row_sum
+        # if unique grid_value, skip the gridplot
+        if len(grid_values) <= 1:
+            return
 
-    # create plot_controller
-    plot_controller = PlotController(dataset=dataset, melt_data=melt_data,
-                                     plot_over=plot_over, ncols=1,
-                                     width=7, height=15)
+        # create plot_controller
+        plot_controller = PlotController(dataset=dataset, melt_data=None,
+                                         plot_over=plot_over, ncols=len(grid_values),
+                                         width=7, height=15)
 
     # aesthetics pre-update
     plot_controller.set_pre_aesthetics()
 
     # draw plot
-    plt.close(fig=plot_controller.fig)
-    plot_controller.axes = np.array([melt_data.plot.bar(stacked=True)])
-    plot_controller.fig = plot_controller.get_axes().get_figure()
+    if grid_over is None:
+        melt_data = dataset.groupby(['Topology', 'DimensionIndex'], sort=False)['AverageChunkLatency'] \
+            .sum() \
+            .unstack()
+        plot_controller.melt_data = melt_data
+
+        ax = plot_controller.get_axes()
+
+        # draw plot
+        melt_data.plot.bar(stacked=True, ax=ax)
+    else:
+        axes = plot_controller.get_axes()
+
+        for i in range(len(grid_values)):
+            grid_value = grid_values[i]
+            data = dataset.loc[dataset[grid_over] == grid_value]
+            melt_data = data.groupby(['Topology', 'DimensionIndex'], sort=False)['AverageChunkLatency'] \
+                .sum() \
+                .unstack()
+            plot_controller.melt_data = melt_data
+
+            # draw plot
+            ax = axes[i]
+            melt_data.plot.bar(stacked=True, ax=ax)
+            plot_controller.axes[i].set_title(f"{grid_value}")
 
     # aesthetics update
     plot_controller.set_xlabel(xlabel='Topology')
     plot_controller.set_ylabel(ylabel='CommsTime_Chunk (ms)')
     plot_controller.set_title()
-    plot_controller.set_post_aesthetics(move_legend_out=True)
+    plot_controller.set_post_aesthetics(remove_legend=True)
 
     # save plot
     plot_controller.save(path=path)

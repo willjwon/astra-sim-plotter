@@ -57,6 +57,10 @@ def main():
                             grid_over='RunName',
                             plot_fun=commstime_topology,
                             path='../graph/CommsTime_Topology')
+    layerwise_plotter.plot(plot_over=['Passes', 'Workload', 'CommScale'],
+                            grid_over='RunName',
+                            plot_fun=commstimechunk_topology,
+                            path='../graph/CommsTimeChunk_Topology')
 
     # breakdown plots
     end_to_end_plotter.plot(plot_over=['RunName', 'Passes', 'Workload'],
