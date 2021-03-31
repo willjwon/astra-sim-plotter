@@ -4,7 +4,7 @@ LICENSE file in the root directory of this source tree.
 """
 
 from typing import List, Callable, Optional
-from src.plot.plot_controller import PlotController
+from plot.plot_controller import PlotController
 import pandas as pd
 import numpy as np
 

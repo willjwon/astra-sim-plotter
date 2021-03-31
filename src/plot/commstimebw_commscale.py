@@ -6,7 +6,7 @@ LICENSE file in the root directory of this source tree.
 from typing import List, Optional
 import pandas as pd
 import seaborn as sns
-from src.plot.plot_controller import PlotController
+from plot.plot_controller import PlotController
 
 
 def commstimebw_commscale(dataset: pd.DataFrame, plot_over: List[str], grid_over: Optional[str], path: str, tight_axis: bool = False):

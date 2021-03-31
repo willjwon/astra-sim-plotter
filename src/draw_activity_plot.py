@@ -8,8 +8,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 import pandas as pd
-from src.helper.directory_manager import DirectoryManager
-from src.data.system_config_parser import SystemConfigParser
+from helper.directory_manager import DirectoryManager
+from data.system_config_parser import SystemConfigParser
 
 
 def parse_run_name(run_name: str):

@@ -3,10 +3,10 @@ This source code is licensed under the MIT license found in the
 LICENSE file in the root directory of this source tree.
 """
 
-from src.data.csv_reader import CsvReader
-from src.data.dataset_type import DatasetType
-from src.data.system_config_parser import SystemConfigParser
-from src.data.topology_config_parser import TopologyConfigParser
+from data.csv_reader import CsvReader
+from data.dataset_type import DatasetType
+from data.system_config_parser import SystemConfigParser
+from data.topology_config_parser import TopologyConfigParser
 
 
 class DatasetLoader:

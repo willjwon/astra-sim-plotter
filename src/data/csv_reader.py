@@ -6,7 +6,7 @@ LICENSE file in the root directory of this source tree.
 import os
 import numpy as np
 import pandas as pd
-from src.data.dataset_type import DatasetType
+from data.dataset_type import DatasetType
 
 
 class CsvReader:

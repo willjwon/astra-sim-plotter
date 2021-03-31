@@ -3,17 +3,17 @@ This source code is licensed under the MIT license found in the
 LICENSE file in the root directory of this source tree.
 """
 
-from src.data.dataset_type import DatasetType
-from src.data.dataset_loader import DatasetLoader
-from src.plot.plot_controller import PlotController
-from src.plot.commstime_commscale import commstime_commscale
-from src.plot.commstimebw_commscale import commstimebw_commscale
-from src.plot.commstimebwdim_commscale import commstimebwdim_commscale
-from src.plot.commstimechunk_topology import commstimechunk_topology
-from src.plot.commstime_topology import commstime_topology
-from src.plot.commstime_cost import commstime_cost
-from src.helper.directory_manager import DirectoryManager
-from src.plot.plotter import Plotter
+from data.dataset_type import DatasetType
+from data.dataset_loader import DatasetLoader
+from plot.plot_controller import PlotController
+from plot.commstime_commscale import commstime_commscale
+from plot.commstimebw_commscale import commstimebw_commscale
+from plot.commstimebwdim_commscale import commstimebwdim_commscale
+from plot.commstimechunk_topology import commstimechunk_topology
+from plot.commstime_topology import commstime_topology
+from plot.commstime_cost import commstime_cost
+from helper.directory_manager import DirectoryManager
+from plot.plotter import Plotter
 
 
 def main():
