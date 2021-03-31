@@ -4,7 +4,6 @@ LICENSE file in the root directory of this source tree.
 """
 
 import os
-import shutil
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -119,6 +118,8 @@ def main():
                     f"\nPass: {config['Passes']}" \
                     f"\nScheduling: (intra: {config['IntraScheduling']}, inter: {config['InterScheduling']})"
             fig.suptitle(title)
+
+            ax.set_ylim((-5, 105))
 
             ax.set_xlabel('Time (us)')
             ax.set_ylabel('Activity (%)')
