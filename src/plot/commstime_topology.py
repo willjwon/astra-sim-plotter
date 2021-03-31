@@ -29,6 +29,12 @@ def commstime_topology(dataset: pd.DataFrame, plot_over: List[str], grid_over: O
                                          width=7, height=15)
     else:
         grid_values = dataset[grid_over].unique()
+
+        # if unique grid_value, skip the gridplot
+        if len(grid_values) <= 1:
+            return
+
+        # if not, create gridplot
         plot_controller = PlotController(dataset=dataset, melt_data=None, plot_over=plot_over, ncols=len(grid_values),
                                          width=5, height=15)
 
